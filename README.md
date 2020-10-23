@@ -6,8 +6,8 @@ I found existing tools such as smbmap and nmap's smb-enum-shares were not 100% r
 
 The script smbclientmap.sh does the following:
 - Given an IP address, the script lists all available shares via smbclient -N -L //ip
-- For each share, the script attempts to run the command "dir". If it works, then we have READ ACCESS.
-- If we have READ ACCESS, then the script will attempt to run the command mkdir "testdir". If it works, then we have WRITE ACCESS.
+- For each share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
+- If we have READ ACCESS, then the script will attempt to run the command "mkdir testdir". If it works, that means we have WRITE ACCESS.
 
 # Scan multiple servers
 
