@@ -5,9 +5,20 @@ For security testing purposes I needed a tool to find readable and writable SMB 
 I found existing tools such as smbmap and nmap's smb-enum-shares were not 100% reliable. However, I had positive experiences using smbclient. So I wrote a wrapper for smbclient.
 
 The script smbclientmap.sh does the following:
-- Given an IP address, the script lists all available shares via smbclient -N -L //ip
-- For each share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
-- If we have READ ACCESS, then the script will attempt to run the command "mkdir testdir". If it works, that means we have WRITE ACCESS.
+
+1. The script takes one IP address as input
+1. The script lists all available shares on that IP address via smbclient -N -L //ip
+2. For each share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
+3. If we have READ ACCESS, then the script will attempt to run the command "mkdir testdir". If it works, that means we have WRITE ACCESS.
+
+# Usage
+
+```
+$ bash smbclientmap.sh
+Usage: smbclientmap.sh IP
+
+$ bash smbclientmap.sh 192.168.0.1
+```
 
 # Scan multiple servers
 
@@ -16,8 +27,24 @@ Create a new file with one IP address per line.
 Now run smbclientmap as follows:
 
 ```
-for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done
+$ for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done
 ```
+
+# Disk shares
+
+There are different kinds of resources: Disk, IPC, Printer and perhaps others:
+
+```
+Sharename      Type      Comment
+---------      ----      -------
+ADMIN$         Disk      Remote Admin
+C$             Disk      Default share
+public         Disk      Public 
+IPC$           IPC       Remote IPC
+HP             Printer
+```
+
+smbclientmap.sh checks only Disk shares.
 
 # SMBv1
 
