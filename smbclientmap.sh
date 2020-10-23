@@ -7,13 +7,17 @@ fi
 ip=$1
 
 echo ""
-echo "# Testing $ip #"
+echo "### Testing $ip ###"
 
-stdbuf -i0 -o0 -e0 smbclient --option='client min protocol=NT1' -N -L //$ip >temp.txt 2>&1
+stdbuf -i0 -o0 -e0 smbclient --option='client min protocol=NT1' -N -g -L //$ip >temp.txt 2>&1
+echo ""
 cat temp.txt
 echo ""
 
-for share in $(cat temp.txt | tr -d '\t' | tr -s ' ' | grep -P -o "^[^\s]+ Disk" | rev | cut -c 6- | rev); do
+# A typical line from smbclient -L (using the -g parameter) looks like this:
+# Disk|C$|Default share
+
+for share in $(grep -E -o "Disk\|[^\|]+" temp.txt | cut -c 6-); do
     echo "# Testing //$ip/$share #"
     stdbuf -i0 -o0 -e0 smbclient --option='client min protocol=NT1' -N //$ip/$share -c "dir" >temp.txt 2>&1
     status=$?
