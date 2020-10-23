@@ -1,8 +1,10 @@
 #!/bin/bash
 
+if [ "$#" -ne "1" ]; then
+    echo "Usage: $0 IP"
+    exit 1
+fi
 ip=$1
-
-testdir=test_$(shuf -i 100000-999999 -n 1)
 
 echo ""
 echo "# Testing $ip #"
@@ -16,6 +18,7 @@ for share in $(cat temp.txt | tr -d '\t' | tr -s ' ' | grep -P -o "^[^\s]+ Disk"
     stdbuf -i0 -o0 -e0 smbclient --option='client min protocol=NT1' -N //$ip/$share -c "dir" >temp.txt 2>&1
     status=$?
     if [ "$status" -eq "0" ]; then
+        testdir=test_$(shuf -i 100000-999999 -n 1)
         stdbuf -i0 -o0 -e0 smbclient --option='client min protocol=NT1' -N //$ip/$share -c "mkdir $testdir" >temp.txt 2>&1
         stdbuf -i0 -o0 -e0 smbclient --option='client min protocol=NT1' -N //$ip/$share -c "dir" >temp.txt 2>&1
         cat temp.txt
