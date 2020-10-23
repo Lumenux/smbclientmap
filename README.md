@@ -4,6 +4,8 @@ For security testing purposes I needed a tool to find readable and writable SMB 
 
 I found existing tools such as smbmap and nmap's smb-enum-shares were not 100% reliable. However, I had positive experiences using smbclient. So I wrote a wrapper for smbclient.
 
+Authentication is done via null sessions (i.e. no username/password is given).
+
 The script smbclientmap.sh does the following:
 
 1. The script takes one IP address as input
