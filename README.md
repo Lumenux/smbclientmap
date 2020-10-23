@@ -13,7 +13,7 @@ The script smbclientmap.sh does the following:
 2. For each Disk share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
 3. If we have READ ACCESS, then the script will attempt to run the command "mkdir". If it works, that means we have WRITE ACCESS.
 
-# Usage
+## Usage
 
 ```
 $ bash smbclientmap.sh
@@ -22,7 +22,7 @@ Usage: smbclientmap.sh IP
 $ bash smbclientmap.sh 192.168.0.1
 ```
 
-# Scan multiple servers
+## Scan multiple servers
 
 Create a new file with one IP address per line.
 
@@ -32,7 +32,7 @@ Now run smbclientmap as follows:
 $ for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done | tee output.txt
 ```
 
-# SMBv1
+## SMBv1
 
 When using smbclient, SMBv1 support is turned off by default. When smbclient connects to an SMBv1 server, then it will display the following error: `protocol negotiation failed: NT_STATUS_CONNECTION_DISCONNECTED`.
 
