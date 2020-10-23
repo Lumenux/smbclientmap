@@ -34,6 +34,6 @@ $ for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done | tee output.txt
 
 # SMBv1
 
-Samba turned off SMBv1. When smbclient connects to an SMBv1 server, then it will display the following error: `protocol negotiation failed: NT_STATUS_CONNECTION_DISCONNECTED`.
+When using smbclient, SMBv1 support is turned off by default. When smbclient connects to an SMBv1 server, then it will display the following error: `protocol negotiation failed: NT_STATUS_CONNECTION_DISCONNECTED`.
 
 To turn on SMBv1 support, I added the parameter `--option='client min protocol=NT1'` to smbclient. 
