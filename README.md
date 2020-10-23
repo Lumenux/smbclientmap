@@ -27,7 +27,7 @@ Create a new file with one IP address per line.
 Now run smbclientmap as follows:
 
 ```
-$ for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done
+$ for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done | tee output.txt
 ```
 
 # SMBv1
