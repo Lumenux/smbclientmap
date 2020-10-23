@@ -8,7 +8,7 @@ The script smbclientmap.sh does the following:
 
 1. The script takes one IP address as input
 1. The script lists all available shares on that IP address via smbclient -N -L //ip
-2. For each share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
+2. For each Disk share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
 3. If we have READ ACCESS, then the script will attempt to run the command "mkdir testdir". If it works, that means we have WRITE ACCESS.
 
 # Usage
@@ -29,22 +29,6 @@ Now run smbclientmap as follows:
 ```
 $ for ip in $(cat ips.txt); do bash smbclientmap.sh $ip; done
 ```
-
-# Disk shares
-
-There are different kinds of resources: Disk, IPC, Printer and perhaps others:
-
-```
-Sharename      Type      Comment
----------      ----      -------
-ADMIN$         Disk      Remote Admin
-C$             Disk      Default share
-public         Disk      Public 
-IPC$           IPC       Remote IPC
-HP             Printer
-```
-
-smbclientmap.sh checks only Disk shares.
 
 # SMBv1
 
