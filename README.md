@@ -9,7 +9,7 @@ Authentication is done via null sessions (i.e. no username/password is given).
 The script smbclientmap.sh does the following:
 
 1. The script takes one IP address as input
-1. The script lists all available shares on that IP address via smbclient -N -L //ip
+1. The script lists all available shares on that IP address via smbclient -N -g -L //ip
 2. For each Disk share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
 3. If we have READ ACCESS, then the script will attempt to run the command "mkdir testdir". If it works, that means we have WRITE ACCESS.
 
