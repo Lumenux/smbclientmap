@@ -31,9 +31,6 @@ Usage: smbclientmap.sh IP
 Disk|print$|Printer Drivers
 Disk|storage|
 IPC|IPC$|IPC Service (Samba 4.9.5-Debian)
-Reconnecting with SMB1 for workgroup listing.
-Workgroup|FRITZBOX|FRITZBOX
-Workgroup|WORKGROUP|RASPBERRYPI
 
 # Testing //192.168.0.1/print$ #
 # Testing //192.168.0.1/storage #
