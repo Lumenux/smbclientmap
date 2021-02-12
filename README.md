@@ -1,10 +1,10 @@
 # smbclientmap
 
-For security testing purposes I needed a tool to find readable and writable SMB shares in a network.
+For security testing I needed a tool to scan a network for readable and writable SMB shares.
 
-I found that existing tools like smbmap and nmap's smb-enum-shares were not 100% reliable. However, I had positive experiences using smbclient. So I wrote a wrapper for smbclient.
+I found that existing tools like smbmap and nmap's smb-enum-shares were not 100% reliable. On the other hand, smbclient was working correctly. So I wrote a wrapper for smbclient which automatically tests read and write permissions of all found shares.
 
-Authentication is done via null sessions (i.e. no username/password is given).
+Authentication is done via null sessions (i.e. no username and password).
 
 The script smbclientmap.sh does the following:
 
