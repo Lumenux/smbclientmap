@@ -16,11 +16,39 @@ The script smbclientmap.sh does the following:
 ## Usage
 
 ```
-$ bash smbclientmap.sh
-Usage: smbclientmap.sh IP
-
 $ bash smbclientmap.sh 192.168.0.1
 ```
+
+## Example
+
+```
+[tux@system ~]$ ash smbclientmap.sh
+Usage: smbclientmap.sh IP
+
+[tux@system ~]$ ash smbclientmap.sh 192.168.0.1
+### Testing 192.168.0.1 ###
+
+Disk|print$|Printer Drivers
+Disk|storage|
+IPC|IPC$|IPC Service (Samba 4.9.5-Debian)
+Reconnecting with SMB1 for workgroup listing.
+Workgroup|FRITZBOX|FRITZBOX
+Workgroup|WORKGROUP|RASPBERRYPI
+
+# Testing //192.168.0.1/print$ #
+# Testing //192.168.0.1/storage #
+  .                                   D        0  Fri Feb 12 10:11:20 2021
+  ..                                  D        0  Sun May 17 17:28:54 2020
+  test_565335                         D        0  Fri Feb 12 10:11:20 2021
+  Documents                           D        0  Thu Aug 13 12:13:40 2020
+  notes.txt                           A      320  Sun Jan 17 18:40:56 2021
+
+                15023184 blocks of size 1024. 11779292 blocks available
+=> WRITE SUCCESS (test_565335 directory)
+=> READ SUCCESS
+```
+
+In this example, two shares (print$ and "storage") could be found. The "storage" share had read and write permissions.
 
 ## Scan multiple servers
 
