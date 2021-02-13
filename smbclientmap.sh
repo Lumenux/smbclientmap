@@ -17,6 +17,7 @@ echo "=> Testing //$ip"
 
 smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N -g -L //$ip | while read -r line; do
     echo $line
+    # Check if the line starts with "Disk|":
     if [[ "$line" == "Disk|"* ]]; then
         share=$(echo $line | cut -d "|" -f 2)
         smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "dir"
