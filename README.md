@@ -2,16 +2,16 @@
 
 For security testing I needed a tool to scan a network for readable and writable SMB shares.
 
-I found that existing tools like smbmap and nmap's smb-enum-shares were not 100% reliable. On the other hand, smbclient was working correctly. So I wrote a wrapper for smbclient which automatically tests read and write permissions of all found shares.
+I found that existing tools like smbmap and nmap's smb-enum-shares were not 100% reliable. On the other hand, smbclient was working correctly. So I wrote a wrapper for smbclient which automatically tests read and write permissions for a given IP address.
 
 Authentication is done via null sessions (i.e. no username and password).
 
 The script smbclientmap.sh does the following:
 
 1. The script takes one IP address as input.
-1. The script lists all available shares on that IP address via smbclient -N -g -L //ip.
-2. For each Disk share, the script attempts to run the command "dir". If it works, that means we have READ ACCESS.
-3. If we have READ ACCESS, then the script will attempt to run the command "mkdir". If it works, that means we have WRITE ACCESS.
+1. The script lists all available shares on that IP address via `smbclient -N -g -L //ip`.
+2. For each `Disk` share, the script attempts to run the command `dir`. If it works, that means we have `READ ACCESS`.
+3. If we have `READ ACCESS`, then the script will attempt to run the command `mkdir` on a random directory name. If it works, that means we have `WRITE ACCESS`.
 
 ## Usage
 
@@ -22,27 +22,25 @@ $ bash smbclientmap.sh 192.168.0.1
 ## Example
 
 ```
-[tux@system ~]$ ash smbclientmap.sh
+[tux@system ~]$ bash smbclientmap.sh
 Usage: smbclientmap.sh IP
 
 [tux@system ~]$ ash smbclientmap.sh 192.168.0.1
-### Testing 192.168.0.1 ###
 
+=> Testing //192.168.0.2
 Disk|print$|Printer Drivers
-Disk|storage|
-IPC|IPC$|IPC Service (Samba 4.9.5-Debian)
-
-# Testing //192.168.0.1/print$ #
-# Testing //192.168.0.1/storage #
+tree connect failed: NT_STATUS_ACCESS_DENIED
+Disk|share|
   .                                   D        0  Fri Feb 12 10:11:20 2021
   ..                                  D        0  Sun May 17 17:28:54 2020
   test_565335                         D        0  Fri Feb 12 10:11:20 2021
   Documents                           D        0  Thu Aug 13 12:13:40 2020
   notes.txt                           A      320  Sun Jan 17 18:40:56 2021
 
-                15023184 blocks of size 1024. 11779292 blocks available
-=> WRITE SUCCESS (test_565335 directory)
-=> READ SUCCESS
+                15023184 blocks of size 1024. 11777864 blocks available
+===> READ SUCCESS for //192.168.0.2/share
+===> WRITE SUCCESS for //192.168.0.2/share (using test directory test_835028)
+IPC|IPC$|IPC Service (Samba 4.9.5-Debian)
 ```
 
 In this example, two shares (print$ and "storage") could be found. The "storage" share had read and write permissions.
