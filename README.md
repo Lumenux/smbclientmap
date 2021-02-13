@@ -30,7 +30,7 @@ Usage: smbclientmap.sh IP
 => Testing //192.168.0.2
 Disk|print$|Printer Drivers
 tree connect failed: NT_STATUS_ACCESS_DENIED
-Disk|share|
+Disk|storage|
   .                                   D        0  Fri Feb 12 10:11:20 2021
   ..                                  D        0  Sun May 17 17:28:54 2020
   test_565335                         D        0  Fri Feb 12 10:11:20 2021
@@ -38,12 +38,12 @@ Disk|share|
   notes.txt                           A      320  Sun Jan 17 18:40:56 2021
 
                 15023184 blocks of size 1024. 11777864 blocks available
-===> READ SUCCESS for //192.168.0.2/share
-===> WRITE SUCCESS for //192.168.0.2/share (using test directory test_835028)
+===> READ SUCCESS for //192.168.0.2/storage
+===> WRITE SUCCESS for //192.168.0.2/storage (using test directory test_835028)
 IPC|IPC$|IPC Service (Samba 4.9.5-Debian)
 ```
 
-In this example, two shares (print$ and "storage") could be found. The "storage" share had read and write permissions.
+In this example, two shares (`print$` and `storage`) were be found. The `storage` share had read and write permissions.
 
 ## Scan multiple servers
 
