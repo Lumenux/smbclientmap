@@ -10,31 +10,24 @@ ip=$1
 touch /tmp/smb.conf
 
 echo ""
-echo "### Testing $ip ###"
-
-stdbuf -i0 -o0 -e0 smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N -g -L //$ip >temp.txt 2>&1
-echo ""
-cat temp.txt
-echo ""
+echo "=> Testing //$ip"
 
 # A typical line from smbclient -L (using the -g parameter) looks like this:
 # Disk|C$|Default share
 
-for share in $(grep -E -o "Disk\|[^\|]+" temp.txt | cut -c 6-); do
-    echo "# Testing //$ip/$share #"
-    stdbuf -i0 -o0 -e0 smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "dir" >temp.txt 2>&1
-    status=$?
-    if [ "$status" -eq "0" ]; then
-        testdir=test_$(shuf -i 100000-999999 -n 1)
-        stdbuf -i0 -o0 -e0 smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "mkdir $testdir" >temp.txt 2>&1
-        stdbuf -i0 -o0 -e0 smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "dir" >temp.txt 2>&1
-        cat temp.txt
-        if grep -q ${testdir} temp.txt; then
-            echo "=> WRITE SUCCESS (${testdir} directory)"
+smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N -g -L //$ip | while read -r line; do
+    echo $line
+    if [[ "$line" == "Disk|"* ]]; then
+        share=$(echo $line | cut -d "|" -f 2)
+        smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "dir"
+        if [ "$?" -eq "0" ]; then
+            echo "===> READ SUCCESS for //$ip/$share"
+            testdir=test_$(shuf -i 100000-999999 -n 1)
+            smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "mkdir $testdir"
+            if smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "dir" | grep -q "$testdir"; then
+                echo "===> WRITE SUCCESS for //$ip/$share (test directory ${testdir})"
+            fi
+            smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "rmdir $testdir"
         fi
-        stdbuf -i0 -o0 -e0 smbclient -s /tmp/smb.conf --option='client min protocol=NT1' -N //$ip/$share -c "rmdir $testdir" >temp.txt 2>&1
-        echo "=> READ SUCCESS"
     fi
 done
-
-[ -e temp.txt ] && rm -f temp.txt
