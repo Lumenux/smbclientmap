@@ -25,7 +25,7 @@ $ bash smbclientmap.sh 192.168.0.1
 [tux@system ~]$ bash smbclientmap.sh
 Usage: smbclientmap.sh IP
 
-[tux@system ~]$ ash smbclientmap.sh 192.168.0.1
+[tux@system ~]$ bash smbclientmap.sh 192.168.0.1
 
 => Testing //192.168.0.2
 Disk|print$|Printer Drivers
